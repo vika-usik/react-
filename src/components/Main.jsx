@@ -1,6 +1,7 @@
 import ServiceCard from "./ServiceCard";
+import PromoBanner from "./PromoBanner";
 
-function Main() {
+function Main({ addToCart }) { 
   const services = [
     {
       id: 1,
@@ -26,23 +27,29 @@ function Main() {
   ];
 
   return (
-    <main className="main">
+    <main className="main py-4">
       <div className="container">
-        <h1>Ласкаво просимо до нашої хімчистки!</h1>
-        <p>
+        
+        <h1 className="text-center">Ласкаво просимо до нашої хімчистки!</h1>
+        <p className="text-center mb-4">
           Ми пропонуємо якісні послуги очищення одягу та текстилю.
         </p>
 
-        <h2>Наші послуги</h2>
+        {}
+        <PromoBanner />
+
+        <h2 className="mt-5 mb-4">Наші послуги</h2>
 
         <div className="row">
           {services.map((service) => (
             <div className="col-md-4 mb-4" key={service.id}>
               <ServiceCard
+                id={service.id}
                 title={service.title}
                 description={service.description}
                 price={service.price}
                 image={service.image}
+                addToCart={addToCart} 
               />
             </div>
           ))}
