@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom"; 
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Header from "./components/Header";
-import Main from "./components/Main";
 import Footer from "./components/Footer";
+
+import HomePage from "./pages/HomePage";
+import CatalogPage from "./pages/CatalogPage";
+import ServiceDetails from "./pages/ServiceDetails";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +21,6 @@ function App() {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -27,7 +31,6 @@ function App() {
   const addToCart = (service, amount) => {
     setCart(prev => {
       const found = prev.find(item => item.id === service.id);
-
       if (found) {
         return prev.map(item =>
           item.id === service.id
@@ -35,15 +38,18 @@ function App() {
             : item
         );
       }
-
       return [...prev, { ...service, qty: amount }];
     });
+  };
+
+  const clearCart = () => {
+    setCart([]);
   };
 
   if (isLoading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="spinner-border" role="status">
+        <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Завантаження...</span>
         </div>
       </div>
@@ -52,8 +58,22 @@ function App() {
 
   return (
     <>
-      <Header cart={cart} />
-      <Main addToCart={addToCart} />
+      {}
+      <Header cart={cart} clearCart={clearCart} />
+      
+      <main style={{ minHeight: '80vh' }}>
+        <Routes>
+          {}
+          <Route path="/" element={<HomePage />} />
+          
+          {}
+          <Route path="/catalog" element={<CatalogPage addToCart={addToCart} />} />
+          
+          {}
+          <Route path="/service/:id" element={<ServiceDetails />} />
+        </Routes>
+      </main>
+
       <Footer />
     </>
   );

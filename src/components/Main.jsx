@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ServiceCard from "./ServiceCard";
 import PromoBanner from "./PromoBanner";
 
@@ -31,26 +32,34 @@ function Main({ addToCart }) {
       <div className="container">
         
         <h1 className="text-center">Ласкаво просимо до нашої хімчистки!</h1>
-        <p className="text-center mb-4">
+        <p className="text-center mb-4 text-muted">
           Ми пропонуємо якісні послуги очищення одягу та текстилю.
         </p>
 
         {}
         <PromoBanner />
 
-        <h2 className="mt-5 mb-4">Наші послуги</h2>
+        <h2 className="mt-5 mb-4 text-center">Наші послуги</h2>
 
         <div className="row">
           {services.map((service) => (
             <div className="col-md-4 mb-4" key={service.id}>
-              <ServiceCard
-                id={service.id}
-                title={service.title}
-                description={service.description}
-                price={service.price}
-                image={service.image}
-                addToCart={addToCart} 
-              />
+              <div className="card h-100 shadow-sm border-0">
+                <ServiceCard
+                  id={service.id}
+                  title={service.title}
+                  description={service.description}
+                  price={service.price}
+                  image={service.image}
+                  addToCart={addToCart} 
+                />
+                <div className="card-footer bg-white border-0 text-center pb-3">
+                  {}
+                  <Link to={`/service/${service.id}`} className="btn btn-link btn-sm">
+                    🔎 Детальніше про послугу
+                  </Link>
+                </div>
+              </div>
             </div>
           ))}
         </div>
