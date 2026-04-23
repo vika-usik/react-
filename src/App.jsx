@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import CatalogPage from "./pages/CatalogPage";
 import ServiceDetails from "./pages/ServiceDetails";
+import ContactPage from "./pages/ContactPage"; 
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -58,19 +59,16 @@ function App() {
 
   return (
     <>
-      {}
       <Header cart={cart} clearCart={clearCart} />
       
       <main style={{ minHeight: '80vh' }}>
         <Routes>
-          {}
           <Route path="/" element={<HomePage />} />
-          
-          {}
           <Route path="/catalog" element={<CatalogPage addToCart={addToCart} />} />
+          <Route path="/service/:id" element={<ServiceDetails />} />
           
           {}
-          <Route path="/service/:id" element={<ServiceDetails />} />
+          <Route path="/contacts" element={<ContactPage />} />
         </Routes>
       </main>
 

@@ -22,6 +22,10 @@ function Header({ cart, clearCart }) {
               <li className="nav-item">
                 <Link className="nav-link text-white px-2" to="/catalog">Каталог</Link>
               </li>
+              {}
+              <li className="nav-item">
+                <Link className="nav-link text-white px-2" to="/contacts">Контакти</Link>
+              </li>
               <li className="nav-item">
                 <span className="nav-link text-white px-2" style={{ cursor: 'pointer', opacity: 0.7 }}>Про нас</span>
               </li>
@@ -35,7 +39,6 @@ function Header({ cart, clearCart }) {
               <span className="fw-bold text-nowrap">Кошик: {totalCount}</span>
             </div>
 
-            {}
             {totalCount > 0 && (
               <button 
                 onClick={clearCart} 
