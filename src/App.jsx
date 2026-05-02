@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import CatalogPage from "./pages/CatalogPage";
 import ServiceDetails from "./pages/ServiceDetails";
 import ContactPage from "./pages/ContactPage"; 
+import AboutPage from "./pages/AboutPage"; 
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -65,10 +66,12 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/catalog" element={<CatalogPage addToCart={addToCart} />} />
-          <Route path="/service/:id" element={<ServiceDetails />} />
           
           {}
+          <Route path="/service/:id" element={<ServiceDetails addToCart={addToCart} />} />
+          
           <Route path="/contacts" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} /> {}
         </Routes>
       </main>
 

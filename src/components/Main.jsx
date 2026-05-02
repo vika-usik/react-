@@ -1,69 +1,85 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import ServiceCard from "./ServiceCard";
 import PromoBanner from "./PromoBanner";
 
 function Main({ addToCart }) { 
-  const services = [
-    {
-      id: 1,
-      title: "Хімчистка одягу",
-      description: "Професійне очищення одягу",
-      price: 200,
-      image: "https://silver-shop.com.ua/wp-content/uploads/2023/07/suhaya-chistka-odezhdy.jpg"
-    },
-    {
-      id: 2,
-      title: "Чистка килимів",
-      description: "Глибока чистка килимів",
-      price: 350,
-      image: "https://profclean.com.ua/wp-content/uploads/2016/11/8-%D0%BA%D0%BE%D0%B2%D0%B5%D1%80-1024x768.jpg"
-    },
-    {
-      id: 3,
-      title: "Прання білизни",
-      description: "Швидке та якісне прання",
-      price: 150,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShSmGZBeCbCjBN91bs8-PljSdM3XMCqOF0Zw&s"
-    }
-  ];
+  const [services, setServices] = useState([]);
+  const [categories, setCategories] = useState([]); 
+  const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchServices = () => {
+    setIsLoading(true);
+    axios.get("http://127.0.0.1:8000/api/services")
+      .then((res) => {
+        setServices(res.data);
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchServices(); 
+    axios.get("http://127.0.0.1:8000/api/categories")
+      .then((res) => setCategories(res.data));
+  }, []);
+
+  const filterByCategory = (categoryId) => {
+    setIsLoading(true);
+    axios.get(`http://127.0.0.1:8000/api/services?category_id=${categoryId}`)
+      .then((res) => {
+        setServices(res.data);
+        setIsLoading(false);
+      });
+  };
+
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <main className="main py-4">
       <div className="container">
-        
         <h1 className="text-center">Ласкаво просимо до нашої хімчистки!</h1>
-        <p className="text-center mb-4 text-muted">
-          Ми пропонуємо якісні послуги очищення одягу та текстилю.
-        </p>
-
-        {}
         <PromoBanner />
 
         <h2 className="mt-5 mb-4 text-center">Наші послуги</h2>
 
-        <div className="row">
-          {services.map((service) => (
-            <div className="col-md-4 mb-4" key={service.id}>
-              <div className="card h-100 shadow-sm border-0">
-                <ServiceCard
-                  id={service.id}
-                  title={service.title}
-                  description={service.description}
-                  price={service.price}
-                  image={service.image}
-                  addToCart={addToCart} 
-                />
-                <div className="card-footer bg-white border-0 text-center pb-3">
-                  {}
-                  <Link to={`/service/${service.id}`} className="btn btn-link btn-sm">
-                    🔎 Детальніше про послугу
-                  </Link>
-                </div>
-              </div>
-            </div>
+        {}
+        <div className="d-flex justify-content-center gap-2 mb-4">
+          <button className="btn btn-outline-primary" onClick={fetchServices}>Всі</button>
+          {categories.map((cat) => (
+            <button key={cat.id} className="btn btn-outline-primary" onClick={() => filterByCategory(cat.id)}>
+              {cat.name}
+            </button>
           ))}
         </div>
 
+        <div className="mb-4">
+          <input 
+            type="text" 
+            className="form-control" 
+            placeholder="Пошук послуги за назвою..." 
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        {}
+        {isLoading ? (
+          <p className="text-center">Завантаження...</p>
+        ) : (
+          <div className="row">
+            {filteredServices.map((service) => (
+              <div className="col-md-4 mb-5" key={service.id}>
+                <ServiceCard {...service} title={service.name} addToCart={addToCart} />
+                <div className="text-center mt-2">
+                  <Link to={`/service/${service.id}`} className="btn btn-link btn-sm">🔎 Детальніше</Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );
